@@ -6,9 +6,9 @@ namespace HamBusLib
 {
     public class DirectoryBusGreeting : UdpCmdPacket
     {
-        public string Somedata { get; set; }
-        public string Somedata1 { get; set; }
-        public string Somedata2 { get; set; }
-        public const int DirPortUdp = 7300;
+        public int TcpPort = -1;
+        public int UdpPort = -1;
+        public string HostName;
+        public string callSign;
     }
 }
