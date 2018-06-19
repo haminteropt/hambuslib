@@ -34,6 +34,7 @@ namespace OmniRigBus.UdpNetwork
         }
         private NetworkThreadRunner()
         {
+            Console.WriteLine("in thread");
             findPorts();
             udpClient.ExclusiveAddressUse = false;
             ServerInit();

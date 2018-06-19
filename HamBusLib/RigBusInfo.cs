@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HamBusLib
 {
-    public class RigBusDesc : UdpCmdPacket
+    public class RigBusInfo : UdpCmdPacket
     {
         public DateTime CurrentTime { get; set; }
         public string RigType { get; set; }
