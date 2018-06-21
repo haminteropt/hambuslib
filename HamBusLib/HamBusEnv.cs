@@ -51,8 +51,6 @@ namespace HamBusLib
                 return "OSX";
 
             return "Linux";
-
-            return "";
         }
     }
 }
