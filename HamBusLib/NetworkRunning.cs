@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OmniRigBus.UdpNetwork
+namespace HamBusLib.UdpNetwork
 {
     public class NetworkThreadRunner
     {
@@ -35,20 +35,20 @@ namespace OmniRigBus.UdpNetwork
         private NetworkThreadRunner()
         {
             Console.WriteLine("in thread");
-            findPorts();
+            FindPorts();
             udpClient.ExclusiveAddressUse = false;
             ServerInit();
-            clientInit();
+            ClientInit();
         }
 
-        private void findPorts()
+        private void FindPorts()
         {
-            findFreeUdpPort();
-            findFreeTcpPort();
+            FindFreeUdpPort();
+            FindFreeTcpPort();
             Console.WriteLine("tcp port: {0} udp port: {1}", listenTcpPort, listenUdpPort);
         }
 
-        private void findFreeUdpPort()
+        private void FindFreeUdpPort()
         {
             HashSet<int> inUsePorts = new HashSet<int>();
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
@@ -67,7 +67,7 @@ namespace OmniRigBus.UdpNetwork
             listenUdpPort = SelectFreePort(inUsePorts);
 
         }
-        private void findFreeTcpPort()
+        private void FindFreeTcpPort()
         {
             HashSet<int> inUsePorts = new HashSet<int>();
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
@@ -100,7 +100,7 @@ namespace OmniRigBus.UdpNetwork
             return port;
         }
 
-        private void clientInit()
+        private void ClientInit()
         {
             if (clientThread != null)
                 return;
