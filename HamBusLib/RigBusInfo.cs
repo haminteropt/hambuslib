@@ -9,6 +9,7 @@ namespace HamBusLib
         public DateTime CurrentTime { get; set; }
         public string RigType { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public string host { get; set; }
         public string ip { get; set; }
         public int UdpPort { get; set; }
