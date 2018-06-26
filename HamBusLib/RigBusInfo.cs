@@ -14,7 +14,8 @@ namespace HamBusLib
         public string ip { get; set; }
         public int UdpPort { get; set; }
         public int TcpPort { get; set; }
-        public bool sendSyncInfo { get; set; }
+        public bool SendSyncInfo { get; set; } = false;
+        public bool HonorTx { get; set; } = false;
         public int MinVersion { get; set; }
         public int MaxVersion { get; set; }
     }
