@@ -52,7 +52,7 @@ namespace HamBusLib.UdpNetwork
         {
             HashSet<int> inUsePorts = new HashSet<int>();
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] endPoints = properties.GetActiveTcpListeners();
+            IPEndPoint[] endPoints = properties.GetActiveUdpListeners();
 
             foreach (IPEndPoint e in endPoints)
             {
@@ -71,7 +71,7 @@ namespace HamBusLib.UdpNetwork
         {
             HashSet<int> inUsePorts = new HashSet<int>();
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] endPoints = properties.GetActiveUdpListeners();
+            IPEndPoint[] endPoints = properties.GetActiveTcpListeners();
 
             foreach (IPEndPoint e in endPoints)
             {
