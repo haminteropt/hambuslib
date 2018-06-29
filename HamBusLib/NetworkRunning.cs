@@ -23,7 +23,9 @@ namespace HamBusLib.UdpNetwork
         public Thread serverThread;
         public Thread clientThread = null;
         public string guid = Guid.NewGuid().ToString();
+        public RigOperatingState OptState { get; set; } = RigOperatingState.Instance;
         UdpClient udpClient = new UdpClient();
+
 
         public static NetworkThreadRunner GetInstance()
         {
@@ -48,8 +50,11 @@ namespace HamBusLib.UdpNetwork
             Console.WriteLine("tcp port: {0} udp port: {1}", listenTcpPort, listenUdpPort);
         }
 
-        private void FindFreeUdpPort()
+        private int FindFreeUdpPort()
         {
+            if (listenUdpPort > 1024)
+                return listenUdpPort;
+
             HashSet<int> inUsePorts = new HashSet<int>();
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
             IPEndPoint[] endPoints = properties.GetActiveUdpListeners();
@@ -62,13 +67,16 @@ namespace HamBusLib.UdpNetwork
             if (listenTcpPort > 0 && inUsePorts.Contains(listenTcpPort) == false)
             {
                 listenUdpPort = listenTcpPort;
-                return;
+                return listenUdpPort;
             }
             listenUdpPort = SelectFreePort(inUsePorts);
+            return listenUdpPort;
 
         }
-        private void FindFreeTcpPort()
+        private int FindFreeTcpPort()
         {
+            if (listenTcpPort > 1024)
+                return listenTcpPort;
             HashSet<int> inUsePorts = new HashSet<int>();
             IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
             IPEndPoint[] endPoints = properties.GetActiveTcpListeners();
@@ -81,9 +89,10 @@ namespace HamBusLib.UdpNetwork
             if (listenUdpPort > 0 && inUsePorts.Contains(listenUdpPort) == false)
             {
                 listenTcpPort = listenUdpPort;
-                return;
+                return listenTcpPort;
             }
             listenTcpPort = SelectFreePort(inUsePorts);
+            return listenTcpPort;
         }
 
         private int SelectFreePort(HashSet<int> inUsePorts)
@@ -133,8 +142,15 @@ namespace HamBusLib.UdpNetwork
         private static void ParseCommand(string returnData)
         {
             var obj = JsonConvert.DeserializeObject<UdpCmdPacket>(returnData);
+            switch (obj.Type)
+            {
+                case "RigOperatingState":
+
+                    break;
+            }
             Console.WriteLine("parsed cmd");
         }
+
 
         public void SendBroadcast(UdpCmdPacket payload, int port)
         {

@@ -10,8 +10,8 @@ namespace HamBusLib
         public string RigType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string host { get; set; }
-        public string ip { get; set; }
+        public string Host { get; set; }
+        public string Ip { get; set; }
         public int UdpPort { get; set; }
         public int TcpPort { get; set; }
         public bool SendSyncInfo { get; set; } = false;
