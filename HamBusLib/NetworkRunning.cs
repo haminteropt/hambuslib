@@ -16,9 +16,6 @@ namespace HamBusLib.UdpNetwork
     {
         public int listenUdpPort = -1;
         public int listenTcpPort = -1;
-        private const int basePort = 7301;
-        private const int topPort = 7600;
-
         private static NetworkThreadRunner netWorkThread = null;
         public Thread serverThread;
         public Thread clientThread = null;
@@ -36,77 +33,13 @@ namespace HamBusLib.UdpNetwork
         }
         private NetworkThreadRunner()
         {
-            FindPorts();
+            listenTcpPort = IpPorts.TcpPort;
+            listenUdpPort = IpPorts.UdpPort;
             udpClient.ExclusiveAddressUse = false;
             ServerInit();
             ClientInit();
         }
 
-        private void FindPorts()
-        {
-            FindFreeUdpPort();
-            FindFreeTcpPort();
-            Console.WriteLine("port: {0}", listenUdpPort);
-        }
-
-        private int FindFreeUdpPort()
-        {
-            if (listenUdpPort > 1024)
-                return listenUdpPort;
-
-            HashSet<int> inUsePorts = new HashSet<int>();
-            IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] endPoints = properties.GetActiveUdpListeners();
-
-            foreach (IPEndPoint e in endPoints)
-            {
-                if (e.Port >= basePort)
-                    inUsePorts.Add(e.Port);
-            }
-            if (listenTcpPort > 0 && inUsePorts.Contains(listenTcpPort) == false)
-            {
-                listenUdpPort = listenTcpPort;
-                return listenUdpPort;
-            }
-            listenUdpPort = SelectFreePort(inUsePorts);
-            return listenUdpPort;
-
-        }
-        private int FindFreeTcpPort()
-        {
-            if (listenTcpPort > 1024)
-                return listenTcpPort;
-            HashSet<int> inUsePorts = new HashSet<int>();
-            IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] endPoints = properties.GetActiveTcpListeners();
-
-            foreach (IPEndPoint e in endPoints)
-            {
-                if (e.Port >= basePort)
-                    inUsePorts.Add(e.Port);
-            }
-            if (listenUdpPort > 0 && inUsePorts.Contains(listenUdpPort) == false)
-            {
-                listenTcpPort = listenUdpPort;
-                return listenTcpPort;
-            }
-            listenTcpPort = SelectFreePort(inUsePorts);
-            return listenTcpPort;
-        }
-
-        private int SelectFreePort(HashSet<int> inUsePorts)
-        {
-            int port = -1;
-            for (int i = basePort; i <= topPort; i++)
-            {
-                if (inUsePorts.Contains(i) == false)
-                {
-                    port = i;
-                    break;
-                }
-            }
-            return port;
-        }
 
         private void ClientInit()
         {
@@ -123,7 +56,6 @@ namespace HamBusLib.UdpNetwork
         }
         private void ServerStart()
         {
-
             UdpClient udpServer = new UdpClient(listenUdpPort);
 
             while (true)
@@ -145,7 +77,6 @@ namespace HamBusLib.UdpNetwork
                     break;
             }
         }
-
 
         public void SendBroadcast(UdpCmdPacket payload, int port)
         {

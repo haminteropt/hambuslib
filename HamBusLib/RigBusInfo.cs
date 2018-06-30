@@ -6,7 +6,7 @@ namespace HamBusLib
 {
     public class RigBusInfo : UdpCmdPacket
     {
-        public DateTime CurrentTime { get; set; }
+
         public string RigType { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
