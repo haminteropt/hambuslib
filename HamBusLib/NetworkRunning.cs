@@ -36,7 +36,6 @@ namespace HamBusLib.UdpNetwork
         }
         private NetworkThreadRunner()
         {
-            Console.WriteLine("in thread");
             FindPorts();
             udpClient.ExclusiveAddressUse = false;
             ServerInit();
@@ -47,7 +46,7 @@ namespace HamBusLib.UdpNetwork
         {
             FindFreeUdpPort();
             FindFreeTcpPort();
-            Console.WriteLine("tcp port: {0} udp port: {1}", listenTcpPort, listenUdpPort);
+            Console.WriteLine("port: {0}", listenUdpPort);
         }
 
         private int FindFreeUdpPort()
@@ -127,28 +126,24 @@ namespace HamBusLib.UdpNetwork
 
             UdpClient udpServer = new UdpClient(listenUdpPort);
 
-            int count = 0;
             while (true)
             {
                 IPEndPoint RemoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 Byte[] receiveBytes = udpServer.Receive(ref RemoteIpEndPoint);
                 string returnData = Encoding.ASCII.GetString(receiveBytes);
-                Console.WriteLine("{0}:recv data {1} address: {2}", count++, returnData,
-                    RemoteIpEndPoint.Address.ToString());
                 ParseCommand(returnData);
             }
         }
 
-        private static void ParseCommand(string returnData)
+        private void ParseCommand(string returnData)
         {
             var obj = JsonConvert.DeserializeObject<UdpCmdPacket>(returnData);
             switch (obj.Type)
             {
                 case "RigOperatingState":
-
+                    OptState.OperatingStateParse(returnData);
                     break;
             }
-            Console.WriteLine("parsed cmd");
         }
 
 

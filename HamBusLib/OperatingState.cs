@@ -40,6 +40,7 @@ namespace HamBusLib
             Xit = rigState.Xit;
             Split = rigState.Split;
             Rit = rigState.Rit;
+            Id = rigState.Id;
 
             return rigState;
         }
