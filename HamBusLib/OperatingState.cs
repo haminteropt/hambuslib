@@ -7,8 +7,7 @@ namespace HamBusLib
 {
     public class OperatingState : UdpCmdPacket
     {
-        public Int64 Freq
-        { get; set; }
+        public Int64 Freq { get; set; }
         public Int64 FreqA { get; set; }
         public Int64 FreqB { get; set; }
         public string Mode { get; set; }
