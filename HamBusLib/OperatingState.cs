@@ -5,6 +5,7 @@ using System.Text;
 
 namespace HamBusLib
 {
+
     public class OperatingState : UdpCmdPacket
     {
         public Int64 Freq { get; set; }
