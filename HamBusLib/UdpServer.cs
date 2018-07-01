@@ -12,40 +12,32 @@ using System.Threading.Tasks;
 
 namespace HamBusLib.UdpNetwork
 {
-    public class NetworkThreadRunner
+    public class UdpServer
     {
         public int listenUdpPort = -1;
         public int listenTcpPort = -1;
-        private static NetworkThreadRunner netWorkThread = null;
+        private static UdpServer netWorkThread = null;
         public Thread serverThread;
-        public Thread clientThread = null;
         public string guid = Guid.NewGuid().ToString();
         public RigOperatingState OptState { get; set; } = RigOperatingState.Instance;
         UdpClient udpClient = new UdpClient();
 
 
-        public static NetworkThreadRunner GetInstance()
+        public static UdpServer GetInstance()
         {
             if (netWorkThread == null)
-                netWorkThread = new NetworkThreadRunner();
+                netWorkThread = new UdpServer();
 
             return netWorkThread;
         }
-        private NetworkThreadRunner()
+        private UdpServer()
         {
             listenTcpPort = IpPorts.TcpPort;
             listenUdpPort = IpPorts.UdpPort;
             udpClient.ExclusiveAddressUse = false;
             ServerInit();
-            ClientInit();
         }
 
-
-        private void ClientInit()
-        {
-            if (clientThread != null)
-                return;
-        }
 
         private void ServerInit()
         {
