@@ -20,9 +20,6 @@ namespace HamBusLib
         public string Rit { get; set; }
         public OperatingState()
         {
-            this.Freq = 14250000;
-            this.FreqA = 14250000;
-            this.FreqB = 14250000;
             this.Tx = false;
             this.Mode = ModeConst.USB;
             this.Type = "RigOperatingState";
