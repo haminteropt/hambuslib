@@ -13,6 +13,7 @@ namespace HamBusLib
 
         public RigBusInfo()
         {
+            Id = Guid.NewGuid().ToString();
             DocType = "RigBus";
         }
     }

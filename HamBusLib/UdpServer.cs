@@ -18,7 +18,6 @@ namespace HamBusLib.UdpNetwork
         public int listenTcpPort = -1;
         private static UdpServer netWorkThread = null;
         public Thread serverThread;
-        public string guid = Guid.NewGuid().ToString();
         public RigOperatingState OptState { get; set; } = RigOperatingState.Instance;
         UdpClient udpClient = new UdpClient();
 
