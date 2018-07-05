@@ -22,7 +22,7 @@ namespace HamBusLib
         {
             this.Tx = false;
             this.Mode = ModeConst.USB;
-            this.Type = "RigOperatingState";
+            this.DocType = "RigOperatingState";
         }
         public OperatingState OperatingStateParse(string returnData)
         {

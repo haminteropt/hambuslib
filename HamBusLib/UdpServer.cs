@@ -61,7 +61,7 @@ namespace HamBusLib.UdpNetwork
         private void ParseCommand(string returnData)
         {
             var obj = JsonConvert.DeserializeObject<UdpCmdPacket>(returnData);
-            switch (obj.Type)
+            switch (obj.DocType)
             {
                 case "RigOperatingState":
                     OptState.OperatingStateParse(returnData);
