@@ -8,14 +8,8 @@ namespace HamBusLib
     public class RigOperatingState : OperatingState
     {
         public delegate void OptStateDelegate(OperatingState state);
-        public static readonly RigOperatingState _instance = new RigOperatingState();
-        public static RigOperatingState Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
+        public static RigOperatingState Instance { get; set; } = new RigOperatingState();
+
         public OptStateDelegate newStateDelegate { get; set; } = null;
         public new OperatingState OperatingStateParse(string returnData)
         {
