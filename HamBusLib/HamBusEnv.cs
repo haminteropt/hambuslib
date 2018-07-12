@@ -20,7 +20,6 @@ namespace HamBusLib
             string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             return path;
         }
-
         public static string ReadConfigJson(string path)
         {
             if (File.Exists(path) == false)
@@ -33,7 +32,6 @@ namespace HamBusLib
             string rc = File.ReadAllText(path);
             return rc;
         }
-
         public static void WriteConfigJson(string path, string content)
         {
             if (File.Exists(path) == false)
@@ -42,7 +40,6 @@ namespace HamBusLib
             }
             File.WriteAllText(path, content);
         }
-
         public static string GetOS()
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
