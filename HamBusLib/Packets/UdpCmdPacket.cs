@@ -19,5 +19,20 @@ namespace HamBusLib
         public int TcpPort { get; set; } = -1;
         public int MinVersion { get; set; }
         public int MaxVersion { get; set; }
+
+        public void Copy(UdpCmdPacket source)
+        {
+            Id = source.Id;
+            Command = source.Command;
+            Time = source.Time;
+            Name = source.Name;
+            Description = source.Description;
+            Host = source.Host;
+            Ip = source.Ip;
+            UdpPort = source.UdpPort;
+            TcpPort = source.TcpPort;
+            MinVersion = source.MinVersion;
+            MaxVersion = source.MaxVersion;
+        }
     }
 }
