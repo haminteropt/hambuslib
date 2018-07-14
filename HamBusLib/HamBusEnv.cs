@@ -8,6 +8,7 @@ namespace HamBusLib
 {
     public class HamBusEnv
     {
+        public static int SleepTimeMs { get; set; } = 3000;
         public static string GetHome()
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
