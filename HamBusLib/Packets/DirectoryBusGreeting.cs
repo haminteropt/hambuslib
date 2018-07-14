@@ -19,13 +19,10 @@ namespace HamBusLib
         public void JsonParse(string jsonData)
         {
         }
-        public void ParseCommand(string returnData)
+        public static DirectoryBusGreeting ParseCommand(string returnData)
         {
             var obj = JsonConvert.DeserializeObject<DirectoryBusGreeting>(returnData);
-            if (obj.DocType == DocType)
-            {
-                obj.copy(this);
-            }
+            return obj;
         }
         public void copy(DirectoryBusGreeting source)
         {

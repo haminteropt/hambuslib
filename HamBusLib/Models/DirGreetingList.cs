@@ -18,6 +18,15 @@ namespace HamBusLib.Models
                 return null;
             }
         }
+        public void Add(DirectoryBusGreeting greeting)
+        {
+            foreach( var item in List)
+            {
+                if (greeting.Id == item.Id)
+                    return;
+            }
+            List.Add(greeting);
+        }
 
     }
 }
