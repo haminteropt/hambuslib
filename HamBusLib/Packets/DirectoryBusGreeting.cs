@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HamBusLib.Packets;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,7 +12,7 @@ namespace HamBusLib
         public string CallSign;
         public DirectoryBusGreeting()
         {
-            DocType = "DirectoryBusGreeting";
+            DocType = DocTypes.DirectoryBusGreeting;
             Host = NetworkUtils.getHostName();
             CallSign = "None";
 

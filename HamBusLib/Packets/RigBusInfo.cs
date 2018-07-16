@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HamBusLib.Models;
+using HamBusLib.Packets;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,7 +18,32 @@ namespace HamBusLib
         public RigBusInfo()
         {
             Id = Guid.NewGuid().ToString();
-            DocType = "RigBus";
+            DocType = DocTypes.RigBusInfo;
         }
+        public RigBusInfo Parse(ConcurrentDictionary<string, JsonBase> busList)
+        {
+            var rc = new RigBusInfo();
+            Parse(busList, rc);
+            foreach (KeyValuePair<string, JsonBase> item in busList)
+            {
+                switch (item.Key.ToLower())
+                {
+                    case "rigtype":
+                        RigType = ((JsonNode<string>)(item.Value)).Value;
+                        break;
+                    case "sendsyncinfo":
+                        SendSyncInfo = ((JsonNode<Boolean>)(item.Value)).Value;
+                        break;
+                    case "honortx":
+                        HonorTx = ((JsonNode<Boolean>)(item.Value)).Value;
+                        break;
+                    case "comport":
+                        ComPort = ((JsonNode<string>)(item.Value)).Value;
+                        break;
+                }
+            }
+            return rc;
+        }
+
     }
 }

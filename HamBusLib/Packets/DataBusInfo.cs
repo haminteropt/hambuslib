@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HamBusLib.Models;
+using HamBusLib.Packets;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,21 +9,37 @@ namespace HamBusLib
 {
     public class DataBusInfo : UdpCmdPacket
     {
-        private static DataBusInfo instance = null;
-        private DataBusInfo()
+
+        public DataBusInfo()
         {
-            DocType = "DataBusInfo";
+            DocType = DocTypes.DataBusInfo;
         }
-        public static DataBusInfo Instance
+
+
+        static public DataBusInfo Parse(ConcurrentDictionary<string, JsonBase> busList)
         {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new DataBusInfo();
-                }
-                return instance;
-            }
+            var rc = new DataBusInfo();
+            Parse(busList, rc);
+            //foreach(KeyValuePair<string, JsonBase> item in busList)
+            //{
+            //    switch (item.Key.ToLower())
+            //    {
+            //        case "rigtype":
+            //            RigType = ((JsonNode<string>)(item.Value)).Value;
+            //            break;
+            //        case "sendsyncinfo":
+            //            SendSyncInfo = ((JsonNode<Boolean>)(item.Value)).Value;
+            //            break;
+            //        case "honortx":
+            //            HonorTx = ((JsonNode<Boolean>)(item.Value)).Value;
+            //            break;
+            //        case "comport":
+            //            ComPort = ((JsonNode<string>)(item.Value)).Value;
+            //            break;
+            //    }
+
+            //}
+            return rc;
         }
     }
 }

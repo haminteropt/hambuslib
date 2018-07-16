@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HamBusLib.Packets;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,7 +23,7 @@ namespace HamBusLib
         {
             this.Tx = false;
             this.Mode = ModeConst.USB;
-            this.DocType = "RigOperatingState";
+            this.DocType = DocTypes.RigOperatingState;
         }
         public OperatingState OperatingStateParse(string returnData)
         {

@@ -3,6 +3,7 @@
     using HamBusLib.Models;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Net.Http;
@@ -78,7 +79,7 @@
         private static void parseJson(string response)
         {
 
-            List<JsonBase> busList = new List<JsonBase>();
+            var busItem = new ConcurrentDictionary<string,JsonBase>();
             JsonBase node = new JsonBase();
             string propName = "";
 
@@ -93,30 +94,38 @@
                     case JsonToken.StartObject:
                         break;
                     case JsonToken.Integer:
-                        node = new JsonNode<int>();
-                        (node as JsonNode<int>).value = int.Parse(reader.Value.ToString());
+                        node = new JsonNode<Int64>();
+                        (node as JsonNode<Int64>).Value = int.Parse(reader.Value.ToString());
                         node.PropName = propName;
-                        busList.Add(node);
+                        busItem[propName] = node;
+                        break;
+                    case JsonToken.Boolean:
+                        node = new JsonNode<Boolean>();
+                        (node as JsonNode<Boolean>).Value = Boolean.Parse(reader.Value.ToString());
+                        node.PropName = propName;
+                        busItem[propName] = node;
                         break;
                     case JsonToken.Float:
                         node = new JsonNode<float>();
-                        (node as JsonNode<float>).value = float.Parse(reader.Value.ToString());
+                        (node as JsonNode<float>).Value = float.Parse(reader.Value.ToString());
                         node.PropName = propName;
-                        busList.Add(node);
+                        busItem[propName] = node;
                         break;
                     case JsonToken.String:
                         node = new JsonNode<string>();
-                        (node as JsonNode<string>).value = reader.Value.ToString();
+                        (node as JsonNode<string>).Value = reader.Value.ToString();
                         node.PropName = propName;
-                        busList.Add(node);
+                        busItem[propName] = node;
                         break;
                     case JsonToken.Date:
                         node = new JsonNode<DateTime>();
+                        (node as JsonNode<DateTime>).Value = DateTime.Parse(reader.Value.ToString());
                         node.PropName = propName;
-                        (node as JsonNode<DateTime>).value = DateTime.Parse(reader.Value.ToString());
-                        busList.Add(node);
+                        busItem[propName] = node;
                         break;
                     case JsonToken.EndObject:
+                        ProcessBus(busItem);
+                        busItem = new ConcurrentDictionary<string, JsonBase>();
                         break;
                     case JsonToken.PropertyName:
                         propName = reader.Value.ToString();
@@ -134,6 +143,15 @@
                     Console.WriteLine("Token: {0}", reader.TokenType);
                 }
             }
+        }
+
+        private static void ProcessBus(ConcurrentDictionary<string, JsonBase> busList)
+        {
+            var docType = busList["docType"];
+            //switch(docType)
+            //{
+
+            //}
         }
     }
 }
