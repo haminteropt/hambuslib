@@ -21,7 +21,7 @@ namespace HamBusLib
             Id = Guid.NewGuid().ToString();
             DocType = DocTypes.RigBusInfo;
         }
-        static public RigBusInfo Parse(string jsonStr)
+        static new public RigBusInfo Parse(string jsonStr)
         {
             var rigDesc = JsonConvert.DeserializeObject<RigBusInfo>(jsonStr);
             return rigDesc;

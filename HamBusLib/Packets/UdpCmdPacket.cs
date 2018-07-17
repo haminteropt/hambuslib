@@ -1,4 +1,5 @@
 ﻿using HamBusLib.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -36,47 +37,10 @@ namespace HamBusLib
             MinVersion = source.MinVersion;
             MaxVersion = source.MaxVersion;
         }
-        public static void Parse(ConcurrentDictionary<string, JsonBase> busList, UdpCmdPacket udpPacket)
+        static public UdpCmdPacket Parse(string jsonStr)
         {
-            foreach (KeyValuePair<string, JsonBase> item in busList)
-            {
-                switch (item.Key.ToLower())
-                {
-                    case "id":
-                        udpPacket.Id = ((JsonNode<string>)(item.Value)).Value;
-                        break;
-                    case "command":
-                        udpPacket.Command = ((JsonNode<string>)(item.Value)).Value;
-                        break;
-                    case "time":
-                        udpPacket.Time = ((JsonNode<Int64>)(item.Value)).Value;
-                        break;
-                    case "name":
-                        udpPacket.Name = ((JsonNode<string>)(item.Value)).Value;
-                        break;
-                    case "description":
-                        udpPacket.Description = ((JsonNode<string>)(item.Value)).Value;
-                        break;
-                    case "host":
-                        udpPacket.Host = ((JsonNode<string>)(item.Value)).Value;
-                        break;
-                    case "ip":
-                        udpPacket.Ip = ((JsonNode<string>)(item.Value)).Value;
-                        break;
-                    case "udpport":
-                        udpPacket.UdpPort = ((JsonNode<Int64>)(item.Value)).Value;
-                        break;
-                    case "tcpport":
-                        udpPacket.TcpPort = ((JsonNode<Int64>)(item.Value)).Value;
-                        break;
-                    case "minversion":
-                        udpPacket.MinVersion = ((JsonNode<Int64>)(item.Value)).Value;
-                        break;
-                    case "maxversion":
-                        udpPacket.MaxVersion = ((JsonNode<Int64>)(item.Value)).Value;
-                        break;
-                }
-            }
+            var data = JsonConvert.DeserializeObject<UdpCmdPacket>(jsonStr);
+            return data;
         }
     }
 }

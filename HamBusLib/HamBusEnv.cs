@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HamBusLib.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -8,6 +9,7 @@ namespace HamBusLib
 {
     public class HamBusEnv
     {
+        public static Object LockObj = new Object();
         public static int SleepTimeMs { get; set; } = 3000;
         public static string GetHome()
         {
@@ -50,5 +52,6 @@ namespace HamBusLib
 
             return "Linux";
         }
+        public static ActiveBuses Buses;
     }
 }

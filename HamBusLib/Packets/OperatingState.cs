@@ -42,7 +42,7 @@ namespace HamBusLib
 
             return rigState;
         }
-        static public OperatingState Parse(string jsonStr)
+        static new public OperatingState Parse(string jsonStr)
         {
             var data = JsonConvert.DeserializeObject<OperatingState>(jsonStr);
             return data;

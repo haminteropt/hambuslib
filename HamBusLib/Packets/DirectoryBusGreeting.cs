@@ -32,7 +32,7 @@ namespace HamBusLib
             Host = source.Host;
 
         }
-        static public DirectoryBusGreeting Parse(string jsonStr)
+        static new public DirectoryBusGreeting Parse(string jsonStr)
         {
             var data = JsonConvert.DeserializeObject<DirectoryBusGreeting>(jsonStr);
             return data;

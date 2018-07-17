@@ -50,18 +50,27 @@
             threadRunning = true;
             try
             {
-                var dirServices = DirGreetingList.Instance.First;
-                var url = string.Format("http://{0}:{1}/api/Directory/V{2}/list", dirServices.Host, dirServices.TcpPort, dirServices.MaxVersion);
+                DirectoryBusGreeting dirServices;
+                string url;
+                //url = string.Format("http://{0}:{1}/api/Directory/V{2}/list", dirServices.Host, dirServices.TcpPort, dirServices.MaxVersion);
                 using (var httpClient = new HttpClient())
                 {
+                    
+
+                    
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "Virtual Rig Bus Version 1");
                     while (true)
                     {
-                        var response = await httpClient.GetStringAsync(new Uri(url));
-                        Console.WriteLine("Json: {0}", response);
-                        //var root = JsonConvert.DeserializeObject<dynamic>(response);
-                        var buses = JsonConvert.DeserializeObject<List<UdpCmdPacket>>(response);
-                        ParseJson(response);
+                        dirServices = DirGreetingList.Instance.First;
+                        if (dirServices != null)
+                        {
+                            url = string.Format("http://{0}:{1}/api/Directory/V{2}/list", dirServices.Host, dirServices.TcpPort, dirServices.MaxVersion);
+                            var response = await httpClient.GetStringAsync(new Uri(url));
+                            Console.WriteLine("Json: {0}", response);
+
+                            var buses = JsonConvert.DeserializeObject<ActiveBuses>(response);
+                            ProcessBus(buses);
+                        }
                         Thread.Sleep(HamBusEnv.SleepTimeMs);
                     }
                 }
@@ -73,43 +82,14 @@
             }
         }
 
-        /// <summary>
-        /// The parseJson
-        /// </summary>
-        /// <param name="response">The response<see cref="string"/></param>
-        public static UdpCmdPacket ParseJson(string response)
+
+
+        private static void ProcessBus(ActiveBuses buses)
         {
-            UdpCmdPacket packet;
-            var udpPacket = JsonConvert.DeserializeObject<UdpCmdPacket>(response);
-            switch(udpPacket.DocType)
+            lock (HamBusEnv.LockObj)
             {
-                case DocTypes.RigBusInfo:
-                    packet = RigBusInfo.Parse(response);
-                    break;
-                case DocTypes.DataBusInfo:
-                    packet = DataBusInfo.Parse(response);
-                    break;
-                case DocTypes.DirectoryBusGreeting:
-                    packet = DirectoryBusGreeting.Parse(response);
-                    break;
-                case DocTypes.OperatingState:
-                    packet = OperatingState.Parse(response);
-                    break;
-                default:
-                    packet = null;
-                    break;
-
+                HamBusEnv.Buses = buses;
             }
-            return packet;
-        }
-
-        private static void ProcessBus(ConcurrentDictionary<string, JsonBase> busList)
-        {
-            var docType = busList["docType"];
-            //switch(docType)
-            //{
-
-            //}
         }
     }
 }

@@ -16,7 +16,7 @@ namespace HamBusLib
             DocType = DocTypes.DataBusInfo;
         }
 
-        static public DataBusInfo Parse(string jsonStr)
+        static new public DataBusInfo Parse(string jsonStr)
         {
             var data = JsonConvert.DeserializeObject<DataBusInfo>(jsonStr);
             return data;
