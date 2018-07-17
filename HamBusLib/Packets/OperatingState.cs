@@ -23,7 +23,7 @@ namespace HamBusLib
         {
             this.Tx = false;
             this.Mode = ModeConst.USB;
-            this.DocType = DocTypes.RigOperatingState;
+            this.DocType = DocTypes.OperatingState;
         }
         public OperatingState OperatingStateParse(string returnData)
         {
@@ -42,5 +42,11 @@ namespace HamBusLib
 
             return rigState;
         }
+        static public OperatingState Parse(string jsonStr)
+        {
+            var data = JsonConvert.DeserializeObject<OperatingState>(jsonStr);
+            return data;
+        }
+
     }
 }

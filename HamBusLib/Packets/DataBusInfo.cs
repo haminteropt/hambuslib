@@ -1,5 +1,6 @@
 ﻿using HamBusLib.Models;
 using HamBusLib.Packets;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -15,31 +16,10 @@ namespace HamBusLib
             DocType = DocTypes.DataBusInfo;
         }
 
-
-        static public DataBusInfo Parse(ConcurrentDictionary<string, JsonBase> busList)
+        static public DataBusInfo Parse(string jsonStr)
         {
-            var rc = new DataBusInfo();
-            Parse(busList, rc);
-            //foreach(KeyValuePair<string, JsonBase> item in busList)
-            //{
-            //    switch (item.Key.ToLower())
-            //    {
-            //        case "rigtype":
-            //            RigType = ((JsonNode<string>)(item.Value)).Value;
-            //            break;
-            //        case "sendsyncinfo":
-            //            SendSyncInfo = ((JsonNode<Boolean>)(item.Value)).Value;
-            //            break;
-            //        case "honortx":
-            //            HonorTx = ((JsonNode<Boolean>)(item.Value)).Value;
-            //            break;
-            //        case "comport":
-            //            ComPort = ((JsonNode<string>)(item.Value)).Value;
-            //            break;
-            //    }
-
-            //}
-            return rc;
+            var data = JsonConvert.DeserializeObject<DataBusInfo>(jsonStr);
+            return data;
         }
     }
 }

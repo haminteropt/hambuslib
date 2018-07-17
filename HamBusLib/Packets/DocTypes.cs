@@ -8,7 +8,7 @@ namespace HamBusLib.Packets
     {
         public const string DataBusInfo = "DataBusInfo";
         public const string RigBusInfo = "RigBusInfo";
-        public const string RigOperatingState = "RigOperatingState";
+        public const string OperatingState = "OperatingState";
         public const string DirectoryBusGreeting = "DirectoryBusGreeting";
     }
 }

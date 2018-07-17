@@ -1,6 +1,7 @@
 ﻿namespace HamBusLib
 {
     using HamBusLib.Models;
+    using HamBusLib.Packets;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Concurrent;
@@ -60,7 +61,7 @@
                         Console.WriteLine("Json: {0}", response);
                         //var root = JsonConvert.DeserializeObject<dynamic>(response);
                         var buses = JsonConvert.DeserializeObject<List<UdpCmdPacket>>(response);
-                        parseJson(response);
+                        ParseJson(response);
                         Thread.Sleep(HamBusEnv.SleepTimeMs);
                     }
                 }
@@ -76,73 +77,30 @@
         /// The parseJson
         /// </summary>
         /// <param name="response">The response<see cref="string"/></param>
-        private static void parseJson(string response)
+        public static UdpCmdPacket ParseJson(string response)
         {
-
-            var busItem = new ConcurrentDictionary<string,JsonBase>();
-            JsonBase node = new JsonBase();
-            string propName = "";
-
-
-            JsonTextReader reader = new JsonTextReader(new StringReader(response));
-            while (reader.Read())
+            UdpCmdPacket packet;
+            var udpPacket = JsonConvert.DeserializeObject<UdpCmdPacket>(response);
+            switch(udpPacket.DocType)
             {
-                switch (reader.TokenType)
-                {
-                    case JsonToken.StartArray:
-                        break;
-                    case JsonToken.StartObject:
-                        break;
-                    case JsonToken.Integer:
-                        node = new JsonNode<Int64>();
-                        (node as JsonNode<Int64>).Value = int.Parse(reader.Value.ToString());
-                        node.PropName = propName;
-                        busItem[propName] = node;
-                        break;
-                    case JsonToken.Boolean:
-                        node = new JsonNode<Boolean>();
-                        (node as JsonNode<Boolean>).Value = Boolean.Parse(reader.Value.ToString());
-                        node.PropName = propName;
-                        busItem[propName] = node;
-                        break;
-                    case JsonToken.Float:
-                        node = new JsonNode<float>();
-                        (node as JsonNode<float>).Value = float.Parse(reader.Value.ToString());
-                        node.PropName = propName;
-                        busItem[propName] = node;
-                        break;
-                    case JsonToken.String:
-                        node = new JsonNode<string>();
-                        (node as JsonNode<string>).Value = reader.Value.ToString();
-                        node.PropName = propName;
-                        busItem[propName] = node;
-                        break;
-                    case JsonToken.Date:
-                        node = new JsonNode<DateTime>();
-                        (node as JsonNode<DateTime>).Value = DateTime.Parse(reader.Value.ToString());
-                        node.PropName = propName;
-                        busItem[propName] = node;
-                        break;
-                    case JsonToken.EndObject:
-                        ProcessBus(busItem);
-                        busItem = new ConcurrentDictionary<string, JsonBase>();
-                        break;
-                    case JsonToken.PropertyName:
-                        propName = reader.Value.ToString();
-                        break;
+                case DocTypes.RigBusInfo:
+                    packet = RigBusInfo.Parse(response);
+                    break;
+                case DocTypes.DataBusInfo:
+                    packet = DataBusInfo.Parse(response);
+                    break;
+                case DocTypes.DirectoryBusGreeting:
+                    packet = DirectoryBusGreeting.Parse(response);
+                    break;
+                case DocTypes.OperatingState:
+                    packet = OperatingState.Parse(response);
+                    break;
+                default:
+                    packet = null;
+                    break;
 
-                }
-
-                node = null;
-                if (reader.Value != null)
-                {
-                    Console.WriteLine("Token: {0}, Value: {1}", reader.TokenType, reader.Value);
-                }
-                else
-                {
-                    Console.WriteLine("Token: {0}", reader.TokenType);
-                }
             }
+            return packet;
         }
 
         private static void ProcessBus(ConcurrentDictionary<string, JsonBase> busList)

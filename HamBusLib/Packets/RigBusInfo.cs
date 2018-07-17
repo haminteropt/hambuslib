@@ -1,5 +1,6 @@
 ﻿using HamBusLib.Models;
 using HamBusLib.Packets;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -20,29 +21,10 @@ namespace HamBusLib
             Id = Guid.NewGuid().ToString();
             DocType = DocTypes.RigBusInfo;
         }
-        public RigBusInfo Parse(ConcurrentDictionary<string, JsonBase> busList)
+        static public RigBusInfo Parse(string jsonStr)
         {
-            var rc = new RigBusInfo();
-            Parse(busList, rc);
-            foreach (KeyValuePair<string, JsonBase> item in busList)
-            {
-                switch (item.Key.ToLower())
-                {
-                    case "rigtype":
-                        RigType = ((JsonNode<string>)(item.Value)).Value;
-                        break;
-                    case "sendsyncinfo":
-                        SendSyncInfo = ((JsonNode<Boolean>)(item.Value)).Value;
-                        break;
-                    case "honortx":
-                        HonorTx = ((JsonNode<Boolean>)(item.Value)).Value;
-                        break;
-                    case "comport":
-                        ComPort = ((JsonNode<string>)(item.Value)).Value;
-                        break;
-                }
-            }
-            return rc;
+            var rigDesc = JsonConvert.DeserializeObject<RigBusInfo>(jsonStr);
+            return rigDesc;
         }
 
     }

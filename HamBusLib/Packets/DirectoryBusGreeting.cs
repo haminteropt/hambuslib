@@ -25,12 +25,17 @@ namespace HamBusLib
             var obj = JsonConvert.DeserializeObject<DirectoryBusGreeting>(returnData);
             return obj;
         }
-        public void copy(DirectoryBusGreeting source)
+        public void Copy(DirectoryBusGreeting source)
         {
             base.Copy(source);
             CallSign = source.CallSign;
             Host = source.Host;
 
+        }
+        static public DirectoryBusGreeting Parse(string jsonStr)
+        {
+            var data = JsonConvert.DeserializeObject<DirectoryBusGreeting>(jsonStr);
+            return data;
         }
     }
 }
