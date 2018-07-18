@@ -52,7 +52,6 @@
             {
                 DirectoryBusGreeting dirServices;
                 string url;
-                //url = string.Format("http://{0}:{1}/api/Directory/V{2}/list", dirServices.Host, dirServices.TcpPort, dirServices.MaxVersion);
                 using (var httpClient = new HttpClient())
                 {
                     
@@ -61,15 +60,20 @@
                     httpClient.DefaultRequestHeaders.Add("User-Agent", "Virtual Rig Bus Version 1");
                     while (true)
                     {
-                        dirServices = DirGreetingList.Instance.First;
-                        if (dirServices != null)
+                        try
                         {
-                            url = string.Format("http://{0}:{1}/api/Directory/V{2}/list", dirServices.Host, dirServices.TcpPort, dirServices.MaxVersion);
-                            var response = await httpClient.GetStringAsync(new Uri(url));
-                            Console.WriteLine("Json: {0}", response);
+                            dirServices = DirGreetingList.Instance.First;
+                            if (dirServices != null)
+                            {
+                                url = string.Format("http://{0}:{1}/api/Directory/V{2}/list", dirServices.Host, dirServices.TcpPort, dirServices.MaxVersion);
+                                var response = await httpClient.GetStringAsync(new Uri(url));
 
-                            var buses = JsonConvert.DeserializeObject<ActiveBuses>(response);
-                            ProcessBus(buses);
+                                var buses = DocParser.ParsePacket(response) as ActiveBuses;
+                                ProcessBus(buses);
+                            }
+                        } catch (Exception e)
+                        {
+                            Console.WriteLine("dir get {0}", e.Message);
                         }
                         Thread.Sleep(HamBusEnv.SleepTimeMs);
                     }

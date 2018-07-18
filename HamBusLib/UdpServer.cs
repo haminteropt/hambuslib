@@ -1,4 +1,5 @@
 ﻿using HamBusLib;
+using HamBusLib.Packets;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -58,15 +59,11 @@ namespace HamBusLib.UdpNetwork
             }
         }
 
-        private void ParseCommand(string returnData)
+        private UdpCmdPacket ParseCommand(string returnData)
         {
-            var obj = JsonConvert.DeserializeObject<UdpCmdPacket>(returnData);
-            switch (obj.DocType)
-            {
-                case "RigOperatingState":
-                    OptState.OperatingStateParse(returnData);
-                    break;
-            }
+            var obj = DocParser.ParsePacket(returnData);
+            Console.WriteLine("****** Parse packet from {0} of type {1}", obj.Host, obj.DocType);
+            return obj;
         }
 
         public void SendBroadcast(UdpCmdPacket payload, int port)
