@@ -13,7 +13,7 @@ namespace HamBusLib.DataRepo
         List<T> GetAllDataBases<T>() where T : class;
         void CreateDataBase<T>(T dbEntity) where T : class;
         void DropDataBase<T>(T dbEntity) where T : class;
-        Task<bool> Auth<T>(T auth) where T : class;
+        bool Auth<T>(T auth) where T : class;
         Task<bool> SaveAll();
     }
 }

@@ -11,24 +11,6 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Defines the <see cref="Credentials" />
-    /// </summary>
-    public class Credentials
-    {
-        /// <summary>
-        /// Gets or sets the Username
-        /// </summary>
-        [JsonProperty(PropertyName = "username")]
-        public string Username { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Password
-        /// </summary>
-        [JsonProperty(PropertyName = "password")]
-        public string Password { get; set; }
-    }
-
-    /// <summary>
     /// Defines the <see cref="CouchDBClient" />
     /// </summary>
     public class CouchDBClient : IGenericRepo
@@ -75,11 +57,16 @@
 
         /// <summary>
         /// The Auth
+        ///                     public Task<bool> Auth<T>(T auth) where T : class
         /// </summary>
         /// <param name="couchDbCredentials">The couchDbCredentials<see cref="Credentials"/></param>
-        public void Auth(Credentials couchDbCredentials)
+        public Boolean Auth<T>(T couchDbCredentials) where T : class
+
         {
             AuthCookie = GetAuthenticationCookie(couchDbCredentials);
+            if (AuthCookie != null)
+                return true;
+            else return false;
         }
 
         /// <summary>
@@ -92,16 +79,7 @@
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// The Auth
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="auth">The auth<see cref="T"/></param>
-        /// <returns>The <see cref="Task{bool}"/></returns>
-        public Task<bool> Auth<T>(T auth) where T : class
-        {
-            throw new NotImplementedException();
-        }
+
 
         /// <summary>
         /// The Delete
@@ -169,7 +147,7 @@
         /// </summary>
         /// <param name="credentials">The credentials<see cref="Credentials"/></param>
         /// <returns>The <see cref="string"/></returns>
-        private string GetAuthenticationCookie(Credentials credentials)
+        private string GetAuthenticationCookie<T>(T credentials)
         {
             string authPayload = JsonConvert.SerializeObject(credentials);
             var authResult = Client.PostAsync("/_session", new StringContent(authPayload, Encoding.UTF8, "application/json")).Result;
