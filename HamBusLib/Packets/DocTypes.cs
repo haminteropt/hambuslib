@@ -12,5 +12,11 @@ namespace HamBusLib.Packets
         public const string OperatingState = "OperatingState";
         public const string DirectoryBusGreeting = "DirectoryBusGreeting";
         public const string ActiveBuses = "ActiveBuses";
+
+        public const string VirtualConfig = "VirtualConfig";
+        public const string RigBusConfig = "RigBusConfig";
+        public const string LogBusConfig = "LogBusConfig";
+        public const string DataBusConfig = "DataBusConfig";
+
     }
 }

@@ -15,5 +15,6 @@ namespace HamBusLib
             string ip = Dns.GetHostEntry(hostName).AddressList[0].ToString();
             return ip;
         }
+
     }
 }

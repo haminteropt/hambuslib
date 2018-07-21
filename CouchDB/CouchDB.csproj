@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="HamBusLib">
+      <HintPath>..\HamBusLib\bin\Debug\netstandard2.0\HamBusLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

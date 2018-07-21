@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HamBusLib.DataBus
+namespace HamBusLib.CouchDB
 {
     public class DataConnection
     {

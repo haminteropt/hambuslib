@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HamBusLib", "HamBusLib\HamBusLib.csproj", "{6DFB3673-5397-4F16-8A94-14EBBF29B55D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HamBusLib", "HamBusLib\HamBusLib.csproj", "{6DFB3673-5397-4F16-8A94-14EBBF29B55D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "..\SampleApp\SampleApp.csproj", "{234A55F1-4F7C-4D56-9220-7397E815FA33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp", "..\SampleApp\SampleApp.csproj", "{234A55F1-4F7C-4D56-9220-7397E815FA33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CouchDB", "CouchDB\CouchDB.csproj", "{D6BFBD0F-7C98-4781-8C54-54045E580402}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{234A55F1-4F7C-4D56-9220-7397E815FA33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{234A55F1-4F7C-4D56-9220-7397E815FA33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{234A55F1-4F7C-4D56-9220-7397E815FA33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6BFBD0F-7C98-4781-8C54-54045E580402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6BFBD0F-7C98-4781-8C54-54045E580402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6BFBD0F-7C98-4781-8C54-54045E580402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6BFBD0F-7C98-4781-8C54-54045E580402}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
