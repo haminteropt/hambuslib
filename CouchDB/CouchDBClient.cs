@@ -15,100 +15,50 @@
     /// </summary>
     public class CouchDBClient : IGenericRepo
     {
-        /// <summary>
-        /// Defines the BaseCouchDbApiAddress
-        /// </summary>
-        private static string BaseCouchDbApiAddress = "http://localhost:5984";
+        private string BaseCouchDbApiAddress { get; set; }
+        private HttpClient Client { get; set; }
 
-        /// <summary>
-        /// Defines the Client
-        /// </summary>
-        private HttpClient Client = new HttpClient() { BaseAddress = new Uri(BaseCouchDbApiAddress) };
-
-        /// <summary>
-        /// Defines the AuthCouchDbCookieKeyName
-        /// </summary>
         private string AuthCouchDbCookieKeyName = "AuthSession";
+        private CookieContainer CookieContainer = new CookieContainer();
 
-        /// <summary>
-        /// Defines the CookieContainer
-        /// </summary>
-        private static CookieContainer CookieContainer = new CookieContainer();
+        public CouchDBClient(string baseUrl)
+        {
+             BaseCouchDbApiAddress = baseUrl;
+             Client = new HttpClient() { BaseAddress = new Uri(BaseCouchDbApiAddress) };
+        }
 
-        /// <summary>
-        /// Gets or sets the User
-        /// </summary>
         public CouchUser User { get; set; }
-
-        /// <summary>
-        /// Gets or sets the AuthCookie
-        /// </summary>
         public string AuthCookie { get; set; }
-
-        /// <summary>
-        /// The Add
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="entity">The entity<see cref="T"/></param>
         public void Add<T>(T entity) where T : class
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// The Auth
-        ///                     public Task<bool> Auth<T>(T auth) where T : class
-        /// </summary>
-        /// <param name="couchDbCredentials">The couchDbCredentials<see cref="Credentials"/></param>
         public Boolean Auth<T>(T couchDbCredentials) where T : class
-
         {
             AuthCookie = GetAuthenticationCookie(couchDbCredentials);
-            if (AuthCookie != null)
-                return true;
-            else return false;
-        }
+            if (AuthCookie == null)
+                return false;
+            CookieContainer.Add(new Uri(BaseCouchDbApiAddress), new Cookie(AuthCouchDbCookieKeyName, AuthCookie));
 
-        /// <summary>
-        /// The CreateDataBase
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dbEntity">The dbEntity<see cref="T"/></param>
-        public void CreateDataBase<T>(T dbEntity) where T : class
+            return true;
+        }
+        public void CreateDataBase<T>(T dbName)
         {
-            throw new NotImplementedException();
+            HttpContent content = new StringContent("{}", Encoding.UTF8, "application/json");
+            CookieContainer.Add(new Uri(BaseCouchDbApiAddress), new Cookie(AuthCouchDbCookieKeyName, AuthCookie));
+            var result = Client.PutAsync("/" + dbName,content).Result;
         }
-
-
-
-        /// <summary>
-        /// The Delete
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="entity">The entity<see cref="T"/></param>
         public void Delete<T>(T entity) where T : class
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// The DropDataBase
-        /// </summary>
-        /// <typeparam name="C"></typeparam>
-        /// <param name="dbEntity">The dbEntity<see cref="C"/></param>
         public void DropDataBase<C>(C dbEntity) where C : class
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// The GetAllDataBases
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns>The <see cref="List{T}"/></returns>
         public List<T> GetAllDataBases<T>() where T : class
         {
-            CookieContainer.Add(new Uri(BaseCouchDbApiAddress), new Cookie(AuthCouchDbCookieKeyName, AuthCookie));
+
             var result = Client.GetAsync("/_all_dbs").Result;
             if (result.IsSuccessStatusCode)
             {
@@ -122,31 +72,14 @@
             }
             return null;
         }
-
-        /// <summary>
-        /// The SaveAll
-        /// </summary>
-        /// <returns>The <see cref="Task{bool}"/></returns>
         public Task<bool> SaveAll()
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// The Update
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="entity">The entity<see cref="T"/></param>
         public void Update<T>(T entity) where T : class
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// The GetAuthenticationCookie
-        /// </summary>
-        /// <param name="credentials">The credentials<see cref="Credentials"/></param>
-        /// <returns>The <see cref="string"/></returns>
         private string GetAuthenticationCookie<T>(T credentials)
         {
             string authPayload = JsonConvert.SerializeObject(credentials);
@@ -174,5 +107,6 @@
 
             throw new HttpRequestException(string.Concat("Authentication failure: ", authResult.ReasonPhrase));
         }
+
     }
 }
