@@ -96,6 +96,7 @@
                 var authCookie = responseHeaders.Where(r => r.Key == "Set-Cookie").Select(r => r.Value.ElementAt(0)).FirstOrDefault();
                 if (authCookie != null)
                 {
+
                     int cookieValueStart = authCookie.IndexOf("=") + 1;
                     int cookieValueEnd = authCookie.IndexOf(";");
                     int cookieLength = cookieValueEnd - cookieValueStart;
