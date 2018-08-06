@@ -1,4 +1,5 @@
 ﻿using HamBusLib.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,7 @@ namespace HamBusLib
     {
         public static Object LockObj = new Object();
         public static int SleepTimeMs { get; set; } = 3000;
+        public static SortedDictionary<string, string> ConfigPairs = new SortedDictionary<string, string>();
         public static string GetHome()
         {
             string path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -53,5 +55,8 @@ namespace HamBusLib
             return "Linux";
         }
         public static ActiveBuses Buses;
+        public static ILoggerFactory loggerFactor;
+        public static ILogger Logger;
+
     }
 }

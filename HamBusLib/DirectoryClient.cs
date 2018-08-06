@@ -2,6 +2,7 @@
 {
     using HamBusLib.Models;
     using HamBusLib.Packets;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using System;
     using System.Collections.Concurrent;
@@ -73,7 +74,8 @@
                             }
                         } catch (Exception e)
                         {
-                            Console.WriteLine("dir get {0}", e.Message);
+                            HamBusEnv.Logger.LogInformation($"parse1 {e.Message}");
+                            //Console.WriteLine("dir get {0}", e.Message);
                         }
                         Thread.Sleep(HamBusEnv.SleepTimeMs);
                     }
@@ -81,7 +83,8 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine("PollDirectoryBus exceptions: {0}", e.Message);
+                HamBusEnv.Logger.LogInformation($"PollDirectoryBus {e.Message}");
+                //Console.WriteLine("PollDirectoryBus exceptions: {0}", e.Message);
                 threadRunning = false;
             }
         }
