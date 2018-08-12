@@ -6,8 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="NLog" Version="4.5.8" />
     <PackageReference Include="System.json" Version="4.5.0" />
-    <PackageReference Include="System.Reactive" Version="4.1.0-preview.84" />
+    <PackageReference Include="System.Reactive" Version="4.1.0-preview.330" />
   </ItemGroup>
 
   <ItemGroup>
